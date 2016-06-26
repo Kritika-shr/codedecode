@@ -1,0 +1,79 @@
+{% extends "quiz/index-full.html" %}
+{% block title %}Test Skills{% endblock %}
+{% block content %}
+<div class="row col-md-1 col-sm-3">
+    <div id="hm_timer">
+        <span id="hours">{{ hour }}</span>
+        <span  id="min">{{ min }}</span>
+    </div>
+</div>
+{% load staticfiles %}
+<a href="#" class="scrollToTop"><img src="{% static 'quiz/images/scroll-to-top.jpg' %}" alt="scroll to top"></a>
+<div class="enclosed col-md-10 col-lg-10 col-sm-9">
+    <div class="brand">{{ level }}</div>
+    <div class="address-bar">{{ level.question_set.all.count }} Questions| {{ level.max_time }} Min | 75% required to pass</div>
+     <form method="POST" action="{% url 'quiz:submit' %}">
+          {% csrf_token %}
+           <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Enter Detail</h4>
+                      </div>
+                      <div class="modal-body">
+                          <div class="form-group">
+                            Email:<input type="text" class="form-control" name="email">
+                          </div>
+                     </div>
+                      <div class="modal-footer">
+                          <input type="submit" name="submit" class="btn btn-primary" value="View Results">
+                      </div>
+                    </div>
+                  </div>
+           </div>
+        <div class="">
+            <div class="row">
+
+                <div class="box">
+                    <div class="col-lg-11">
+                            {% for question in level.question_set.all %}
+
+                             <div class="question question-full">{{ forloop.counter }}) {{ question }}
+                                 {% if question.description %}
+                                 <div class="description">{{ question.description | safe }}</div>
+                                    {% endif %}
+                                 <br>
+                                 <div class="row">
+                                    {% for option in question.question_option_set.all  %}
+                                        <div class="option col-md-9 pull-left">
+                                                {{ forloop.counter }})
+                                            <label class="radio-inline">
+                                                <input type="radio" class="radio" name="option{{option.question_id}}" id="option2{{forloop.counter}}" value="{{ option.id}}">
+                                                {{ option.text }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+
+                                 </div>
+                            </div>
+                         {% endfor %}
+                        <input type="hidden" name="level_id" value="{{ level.id }}">
+                        <button type="button" id="btnfull" class="btn btn-primary" data-target="#exampleModal" data-toggle="modal"  data-backdrop="static" data-keyboard="false">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </form>
+    <!-- /.container -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 text-center">
+                    <p>Copyright &copy; myblogsteps 2015</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+{% endblock %}

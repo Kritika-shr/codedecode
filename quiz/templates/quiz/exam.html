@@ -1,0 +1,45 @@
+{% extends "quiz/index-full.html" %}
+{% block title %}Test Skills{% endblock %}
+{% block content %}
+<body>
+
+    <div class="brand">{{ level }} </div>
+    <div class="address-bar">{{ level}} | {{ level.question_set.all.count }} Questions | {{ level.max_time }} min max Time | 75% to Pass</div>
+ <!-- Navigation -->
+
+    <div class="container">
+      <div class="row">
+            <div class="box">
+                <div class="col-lg-12">
+                    <hr>
+                    <h2 class="intro-text text-center">Topics Covered
+                        <strong>{{ level }}</strong>
+                    </h2>
+                    <hr>
+                    <hr class="visible-xs">
+                    <div class="col-sm-12 col-lg-8 col-md-8">
+                        <p>Instructions</p>
+                        <ul>
+                            <li>This skills test contains {{ level.question_set.all.count  }} multiple choice questions.</li>
+                            <li>You have {{ level.max_time }} minutes to complete this skills test.</li>
+                            <li>Make sure you attempt all the questions.</li>
+                            <li>Do not use the 'Back' button in your browser while taking this skills test.</li>
+                            <li>Modern web browsers improve the skills test experience, so make sure your browser is up to date.</li>
+                            <li>The questions in the skills test are in the English language.</li>
+                        </ul>
+
+                    </div>
+                    <div class="col-sm-12 col-lg-3 col-md-3 col-md-offset-1">
+                        <div class="right-box">
+                        <div class="exam-btn"><a href="/quiz/question_level/{{ id }}" class="btn btn-primary btn-success">Test Your Skills</a></div>
+                        <div class="exam-btn"><a href="/quiz" class="btn btn-primary btn-plain">Back To Page</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+
+
+{% endblock %}

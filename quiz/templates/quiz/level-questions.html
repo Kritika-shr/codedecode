@@ -1,0 +1,13 @@
+{{ level }}
+
+    {% for question in level.question_set.all %}
+        <li>{{ question }}</li>
+
+        {% for option in question.question_option_set.all %}
+            <ul>
+                <li> {{ option }} </li>
+            </ul>
+        {% endfor %}
+
+
+    {% endfor %}

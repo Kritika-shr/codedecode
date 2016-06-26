@@ -1,0 +1,29 @@
+<div class="col-md-3" id="sidebar">
+                <p class="lead">Quiz Name</p>
+                <div class="list-group">
+                </div>
+
+            <div class="panel-group" id="accordion">
+                {% for type in type_all %}
+                  <div class="panel panel-default">
+                    <div class="panel-heading ">
+                      <h4 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{type}}">
+                          {{ type}}
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapseOne{{type}}" class="panel-collapse collapse">
+                      <div class="panel-body">
+                          <ul class="list-unstyled">
+                              {% for subcat in type.quiz_set.all%}
+                                <li> <a class="side_link" href="/quiz/question/{{ subcat.id }}">{{ subcat.title }}</a></li>
+                              {% endfor %}
+                          </ul>
+
+                      </div>
+                    </div>
+                  </div>
+                 {% endfor %}
+            </div>
+    </div>

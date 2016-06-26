@@ -1,0 +1,65 @@
+{% extends "quiz/index.html" %}
+{% block title %}My amazing blog{% endblock %}
+{% block sidebar %} {% include 'quiz/sidebar.html' %} {% endblock %}
+{% block content %}
+<div class="row">
+    <div id="hm_timer">
+        <span id="hours">{{ hour }}</span>
+        <span  id="min">{{ min }}</span>
+    </div>
+</div>
+{% load staticfiles %}
+<a href="#" class="scrollToTop"><img src="{% static 'quiz/images/scroll-to-top.jpg' %}" alt="scroll to top"></a>
+
+    <div class="brand">{{ quiz.type }} </div>
+    <div class="address-bar">{{ quiz}} | {{ quiz.question_set.all.count }} Questions | {{ quiz.max_time }} max Time | 75% to Pass</div>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+          <form method="POST" action="{% url 'quiz:submit' %}">
+              {% csrf_token %}
+              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Enter Detail</h4>
+                      </div>
+                      <div class="modal-body">
+                          <div class="form-group">
+                            Email:<input type="text" class="form-control" name="email">
+                          </div>
+                     </div>
+                      <div class="modal-footer">
+                          <input type="submit" name="submit" class="btn btn-primary" value="View Results">
+                      </div>
+                    </div>
+                  </div>
+              </div>
+             {% if quiz %}
+                    {% for ques in quiz.question_set.all%}
+                        <div class="question">
+                            {% if ques.is_active > 0 %}
+                                {{ forloop.counter }}) {{ques.title}}
+                                {% if quest.description %}
+                                <div class="question-description">{{ ques.description | safe }}</div>
+                                <br>
+                                {% endif %}
+                                {% for option in ques.question_option_set.all %}
+                                <div class="option">{{ forloop.counter }})
+                                <label class="radio-inline">
+                                    <input type="radio" name="option{{option.question_id}}" id="option1{{forloop.counter}}" value="{{ option.id}}">
+                                    {{ option.text }}
+                                </label>
+                                </div>
+                                {% endfor %}
+                            {%  endif %}
+                        </div>
+                    {% endfor %}
+               <input type="hidden" name="type_id" value="{{ type_id }}">
+               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Submit</button>
+          </form>
+            {% else %}
+                <p>No Question Found</p>
+            {% endif %}
+
+</div>
+{% endblock %}

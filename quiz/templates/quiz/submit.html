@@ -1,0 +1,49 @@
+{% extends "quiz/index.html" %}
+{% block title %}My amazing blog{% endblock %}
+{% block sidebar %} {% include 'quiz/sidebar.html' %} {% endblock %}
+{% block content %}
+  <div class="brand">{{ quiz.type }} </div>
+ <div class="address-bar">{{ quiz}} | {{ quiz.question_set.all.count }} Questions | {{ quiz.max_time }} max Time | 75% to Pass</div>
+<div class="row">
+    <div class="col-md-12">
+            <div class="col-md-4"></div>
+            <div class="col-md-4" align="center">
+                 <div class="result" align="center">
+                    <p>Total number of question:  {{total_question}}</p>
+                    <p>No of correct answers: {{ correct_answer_count}}</p>
+                     <p>Your score is: {{percentage}} %</p>
+
+                </div>
+            </div>
+           <div class="col-md-4"></div>
+           <div class="col-md-6">
+              {% for ques in question_attempted %}
+                <div class="question">{{ forloop.counter }} {{ques.title}}
+                    <br>
+                    {% for option in ques.question_option_set.all %}
+                        <div class="option">{{ forloop.counter }})
+                        <label class="radio-inline">
+                            <input type="radio" name="option{{option.question_id}}" id="option{{forloop.counter}}" value="{{ option.id}}">
+                            {% if option.is_correct == 1 %}
+                                <span style="color:green">{{ option.text }}</span>
+                            {% else %}
+                                {% for answer_id in answer %}
+                                    {% if answer_id == option.id %}
+                                        <span style="color:red">{{ option.text }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if option.id not in answer %}
+                                    <span>{{ option.text }}</span>
+                                {% endif%}
+                            {% endif %}
+                        </label>
+                        </div>
+                    {% endfor %}
+                </div>
+              {% endfor %}
+           </div>
+    </div>
+
+</div>
+
+{% endblock %}

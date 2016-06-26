@@ -1,0 +1,64 @@
+{% extends "quiz/index-full.html" %}
+{% block title %}Test Skills{% endblock %}
+{% block content %}
+{% for c in count %}
+{% endfor %}
+<div class="brand">{{ level }}</div>
+<div class="address-bar">{{ level.question_set.all.count }} Questions| {{ level.max_time }} Min | 75% required to pass </div>
+<div class="row">
+     <div class="col-md-12">
+            <div class="col-md-4"></div>
+            <div class="col-md-4" align="center">
+                 <div class="result" align="center">
+                    <p>Total number of question:  {{total_question}}</p>
+                    <p>No of correct answers: {{ correct_answer_count}}</p>
+                     <p>Your score is: {{percentage}} %</p>
+
+                </div>
+            </div>
+           <div class="col-md-4"></div>
+                <!-- <h1>your score is:{{ correct_answer_count}}/{{total_question}}</h1>-->
+
+          <div class="col-md-6">
+              {% for ques in question_attempted %}
+                <div class="question">{{ forloop.counter }}) {{ques.title}}
+
+                    {% if ques.description %}
+                                 <div class="description">{{ ques.description | safe }}</div>
+                                    {% endif %}
+                    <br>
+                    {% for option in ques.question_option_set.all %}
+                        <div class="option">
+                        <label class="radio-inline">
+                                    <ul>
+                                    {% for answer_id in option.attempted_set.all %}
+                                           {% if answer_id.user_id == user_id %}
+                                            {% load staticfiles %}
+                                                {% if option.is_correct == 1 %}
+                                                      <li><img class="tick" src="{% static 'quiz/images/tick.png' %}"><span style="color:green">{{ option }}</span></li>
+                                                {% elif option.is_correct != 1 %}
+                                                       <li><img class="tick" src="{% static 'quiz/images/wrong.png' %}"><span style="color:red;">{{ option }}</span></li>
+                                                 {% endif %}
+                                            {% endif %}
+                                    {% endfor %}
+                                    {% if option.id not in answer %}
+                                        {% if option.is_correct == 1 %}
+                                            <li><span style="color:green">{{ option }}</span></li>
+                                        {% else %}
+                                            <li><span>{{ option }}</span></li>
+                                        {% endif %}
+                                    {% endif %}
+                                    </ul>
+
+                        </label>
+                        </div>
+                    {% endfor %}
+                </div>
+              {% endfor %}
+         </div>
+
+</div>
+
+</div>
+
+{% endblock %}
